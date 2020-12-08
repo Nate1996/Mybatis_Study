@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace等于绑定一个对应的Dao/Mapper接口 -->
+<mapper namespace="com.NATE.dao.UserMapper">
+
+    <!-- 结果集映射 -->
+    <resultMap id="UserMap" type="User">
+        <!-- column数据库中的字段，property实体类中的属性 -->
+        <result column="pwd" property="password"/>
+    </resultMap>
+
+    <!--select查询语句，查询所有用户信息 -->
+   <select id="getUserList" resultMap="UserMap">
+       select * from mybatis.user
+   </select>
+
+    <!-- 根据Id查询用户 -->
+    <select id="getUserById" parameterType="int" resultType="com.NATE.pojo.User">
+        select  * from mybatis.user where id = #{id}
+    </select>
+
+    <!-- 增加一个用户 -->
+    <!-- 对象中的属性，可以直接取出来 -->
+    <insert id="addUser" parameterType="com.NATE.pojo.User">
+        insert into mybatis.user (id,name,pwd) value (#{id},#{name},#{pwd});
+    </insert>
+
+    <!-- 修改一个用户 -->
+    <update id="updateUser" parameterType="com.NATE.pojo.User">
+        update mybatis.user set name = #{name},pwd=#{pwd} where id=#{id} ;
+    </update>
+
+    <!-- 删除一个用户 -->
+    <delete id="deleteUser" parameterType="int" >
+        delete from mybatis.user where id = #{id}
+    </delete>
+
+    <!-- 分页 -->
+    <select id="getUserByLimit" parameterType="map" resultMap="UserMap">
+        select * from mybatis.user limit #{startIndex},#{pageSize}
+    </select>
+
+
+
+</mapper>
